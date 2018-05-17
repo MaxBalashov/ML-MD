@@ -1,2 +1,3 @@
 # ML_Balashov
-init repo
+
+Repo with machine learning tasks (may be theory will appear)
