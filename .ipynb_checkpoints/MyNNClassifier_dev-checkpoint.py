@@ -99,7 +99,8 @@ class MyNNClassifier(MyNNEstimator):
         return probabilities
 
     def predict(self, X):
-        """Predict the class labels for the provided data
+        """
+        Predict the class labels for the provided data
         Parameters
         ----------
         X : array-like, shape (n_query, n_features), \

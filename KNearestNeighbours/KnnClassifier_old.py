@@ -1,4 +1,4 @@
-from MyNNEstimator import MyNNEstimator
+from KnnEstimator import KnnEstimator
 
 import numpy as np
 
@@ -12,7 +12,7 @@ from scipy.spatial.distance import braycurtis, canberra, chebyshev, cityblock, \
                                    sokalsneath, sqeuclidean, wminkowski, yule
 
 
-class MyNNClassifier(MyNNEstimator):
+class KnnClassifier(KnnEstimator):
     """
     Inherited methods:
     BaseEstimator - get_params, set_params

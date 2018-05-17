@@ -1,6 +1,6 @@
 from sklearn.base import BaseEstimator, ClassifierMixin
 
-class MyNNEstimator(BaseEstimator, ClassifierMixin):
+class KnnEstimator(BaseEstimator, ClassifierMixin):
     """
     Inherited methods:
     BaseEstimator - get_params, set_params
