@@ -1,5 +1,4 @@
 # TODO: parzen_window as a func
-#       push to git
 #       documentation
 
 from KnnEstimator import KnnEstimator
@@ -17,7 +16,7 @@ from scipy.spatial.distance import braycurtis, canberra, chebyshev, \
                                    minkowski,rogerstanimoto, russellrao, \
                                    seuclidean,sokalmichener, sokalsneath, \
                                    sqeuclidean, wminkowski, yule
-
+# TODO: вынести в отдельный файл?
 # Шкалирование 3 варианта
 _scalers_dict = {'StandardScaler':StandardScaler,
                  'MinMaxScaler':MinMaxScaler}
@@ -37,17 +36,11 @@ _kernel_dict = {'kernel_gauss':kernel_gauss,
                 'kernel_tri_cube':kernel_tri_cube}
 
 class KnnClassifier(KnnEstimator):
-    """
-    Inherited methods:
-    BaseEstimator - get_params, set_params
-    ClassifierMixin - score
-    ------------------------
+    '''
     Classifier implementing the k-nearest neighbors vote.
-
-    Read more in the :ref:`User Guide <classification>`.
-
+    ---------------------------------------------------------------------------
     Parameters
-    ------------------------
+    
     n_neighbors : int, optional (default = 5)
         Number of neighbors to use by default for :meth:`kneighbors` queries.
 
@@ -76,8 +69,11 @@ class KnnClassifier(KnnEstimator):
     weights : string (default 'uniform')
         ...
         'uniform'
-
-    """
+    ---------------------------------------------------------------------------
+    Inherited methods:
+    BaseEstimator - get_params, set_params
+    ClassifierMixin - score
+    '''
     def __init__(self, n_neighbors = 5, scaler = None,
                  kernel=None, h=-1,
                  metric = 'minkowski', p = 2, weights = 'uniform', **kwargs):
@@ -91,9 +87,9 @@ class KnnClassifier(KnnEstimator):
         self.kwargs = kwargs
 
     def fit(self, X, y):
-        self._y = y.values
         self.labels = np.unique(y)
-        self._fit_X = X.values
+        self._y = np.asarray(y)
+        self._fit_X = np.asarray(X)
 
     def _predict(self, X):
         global _scalers_dict, _metric_dict, _kernel_dict
@@ -135,7 +131,7 @@ class KnnClassifier(KnnEstimator):
             # similar to normalization
             knn_distances_normalized = knn_distances / h
             # eleminate influence of points which are behind h-radius
-            knn_distances_normalized[knn_distances_normalized > 1] = 0
+            knn_distances_normalized[knn_distances_normalized > 1] = 1
             # choose kernel
             kernel = _kernel_dict[self.kernel]
             # compute kernel
@@ -152,7 +148,7 @@ class KnnClassifier(KnnEstimator):
         return probabilities
 
     def predict(self, X):
-        """
+        '''
         Predict the class labels for the provided data.
         Parameters
         ----------
@@ -163,13 +159,13 @@ class KnnClassifier(KnnEstimator):
         -------
         y : array of shape [n_samples] or [n_samples, n_outputs]
             Class labels for each data sample.
-        """
+        '''
         label_inds = self._predict(X).argmax(axis=1)
         classes = self.labels[label_inds]
         return classes
 
     def predict_proba(self, X):
-        """
+        '''
         Return probability estimates for the test data X.
         Parameters
         ----------
@@ -182,11 +178,11 @@ class KnnClassifier(KnnEstimator):
             of such arrays if n_outputs > 1.
             The class probabilities of the input samples. Classes are ordered
             by lexicographic order.
-        """
+        '''
         return self._predict(X)
 
     def score(self, X, y, sample_weight=None):
-        """
+        '''
         Return f1_score computed between `y` and `y_hat` predicted on X.
         Parameters
         ----------
@@ -200,5 +196,5 @@ class KnnClassifier(KnnEstimator):
         -------
         score : float
             f1_score of self.predict(X) wrt. y.
-        """
+        '''
         return f1_score(y, self.predict(X), sample_weight=sample_weight)
