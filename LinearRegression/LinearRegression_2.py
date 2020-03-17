@@ -4,11 +4,10 @@ from sklearn.utils import resample
 from sklearn.base import BaseEstimator, RegressorMixin
 
 
-'''
-LOSS and MAE functions
-'''
+# LOSS and MAE functions
 def mae(y_true, y_pred):
     return np.mean(np.absolute(y_true - y_pred))
+
 
 def loss(y_true, y_pred):
     return np.mean((y_true - y_pred) ** 2)
@@ -24,8 +23,7 @@ class LinRegEstimator(BaseEstimator, RegressorMixin):
 
 
 class LinearRegression(LinRegEstimator):
-    def __init__(self, alpha=0.001, n_iter=1000, fit_intercept=True,
-                 batch_size=None, random_state=None):
+    def __init__(self, alpha=0.001, n_iter=1000, fit_intercept=True, batch_size=None, random_state=None):
         self.alpha = alpha
         self.n_iter = n_iter
         self.fit_intercept = fit_intercept
@@ -43,12 +41,10 @@ class LinearRegression(LinRegEstimator):
     def gradient_descent(self, X, y, w, alpha=0.001, n_iter=1000,
                          batch_size=None, random_state=None):
         seed(seed=random_state)
-        for _ in range(n_iter):
-            # mini-batch (=const), stochastic (=1)
+        for _ in range(n_iter): # mini-batch (=const), stochastic (=1)
             if batch_size:
                 X_batch, y_batch = resample(X, y, n_samples=batch_size, replace=False)
-            # batch (=all)
-            else:
+            else: # batch (=all)
                 X_batch, y_batch = X, y
             w -= alpha * self.grad(X_batch, y_batch, w).sum(axis=1)
         return w

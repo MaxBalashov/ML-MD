@@ -75,8 +75,8 @@ class KnnClassifier(KnnEstimator):
     ClassifierMixin - score
     '''
     def __init__(self, n_neighbors = 5, scaler = None,
-                 kernel=None, h=-1,
-                 metric = 'minkowski', p = 2, weights = 'uniform', **kwargs):
+                 kernel=None, h=-1, metric = 'minkowski',
+                 p = 2, weights = 'uniform', **kwargs):
         self.n_neighbors = n_neighbors
         self.scaler = scaler
         self.kernel = kernel
